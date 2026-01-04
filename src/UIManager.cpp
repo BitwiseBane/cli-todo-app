@@ -1,3 +1,5 @@
+#include "../include/UIManager.h"
+
 #include <ctime>
 #include <iomanip>
 #include <iostream>
@@ -120,7 +122,7 @@ void UIManager::printTaskList(const std::vector<Task*>& tasks) {
 }
 
 void UIManager::printMenu() {
-    std::cout << BOLD << "═══ MENU ═══\n" << RESET;
+    std::cout << BOLD << "╔══ MENU ══╗\n" << RESET;
     std::cout << " 1. Add Task\n";
     std::cout << " 2. View All Tasks\n";
     std::cout << " 3. View by Category\n";
