@@ -53,24 +53,20 @@ jobs:
       with:
         cmake-version: '3.25.x'
 
-    - name: Configure CMake (Linux ARM64)
-      if: matrix.platform == 'linux' && matrix.arch == 'arm64'
+    - name: Configure CMake
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release \
+        if [ "${{ matrix.platform }}" = "linux" ] && [ "${{ matrix.arch }}" = "arm64" ]; then
+          cmake -B build -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc \
           -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++
-
-    - name: Configure CMake (macOS ARM64)
-      if: matrix.platform == 'macos' && matrix.arch == 'arm64'
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
-
-    - name: Configure CMake (Windows ARM64)
-      if: matrix.platform == 'windows' && matrix.arch == 'arm64'
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -A ARM64
-
-    - name: Configure CMake (Default)
-      if: matrix.arch == 'amd64'
-      run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+        elif [ "${{ matrix.platform }}" = "macos" ] && [ "${{ matrix.arch }}" = "arm64" ]; then
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
+        elif [ "${{ matrix.platform }}" = "windows" ] && [ "${{ matrix.arch }}" = "arm64" ]; then
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -A ARM64
+        else
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+        fi
+      shell: bash
 
     - name: Build
       run: cmake --build build --config Release
